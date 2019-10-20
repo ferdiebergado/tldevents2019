@@ -20,6 +20,7 @@ Auth::routes(['verify' => true]);
 Route::group(['middleware' => ['verified', 'auth', 'active']], function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::group(['prefix' => '/admin', 'middleware' => ['admin']], function () {
+        Route::resource('programs', 'ProgramController');
         // Route::get('decompose', '\Lubusin\Decomposer\Controllers\DecomposerController@index');
     });
 });
