@@ -1,26 +1,28 @@
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+// @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Variables
-@import 'variables';
+// @import 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
+@import '~@coreui/coreui/scss/coreui';
+@import '~simple-line-icons/scss/simple-line-icons';
 
 // Custom Styles
-.card {
-  box-shadow: 0 1px 4px rgba(0,0,0,.4);
-  &.border-primary,
-  &.border-secondary,
-  &.border-success,
-  &.border-info,
-  &.border-warning,
-  &.border-danger,
-  &.border-light,
-  &.border-dark {
-    border-width: 1px;
-  }
-}
+// .card {
+//   box-shadow: 0 1px 4px rgba(0,0,0,.4);
+//   &.border-primary,
+//   &.border-secondary,
+//   &.border-success,
+//   &.border-info,
+//   &.border-warning,
+//   &.border-danger,
+//   &.border-light,
+//   &.border-dark {
+//     border-width: 1px;
+//   }
+// }
 
 .form-control:focus {
     border-color: rgba(82,168,236,.8);
