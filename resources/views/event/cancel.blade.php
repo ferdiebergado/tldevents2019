@@ -1,0 +1,1 @@
+<a class="btn btn-link" href="{{ route('events.index')}}" role="button">Cancel</a>

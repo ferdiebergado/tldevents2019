@@ -2,9 +2,10 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Program extends Model
+class Program extends BaseModel
 {
-    //
+    protected $fillable = [
+        'title',
+        'key_stage'
+    ];
 }

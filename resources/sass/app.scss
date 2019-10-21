@@ -8,6 +8,7 @@
 // @import '~bootstrap/scss/bootstrap';
 @import '~@coreui/coreui/scss/coreui';
 @import '~simple-line-icons/scss/simple-line-icons';
+@import '~flatpickr/dist/flatpickr.min.css';
 
 // Custom Styles
 // .card {
@@ -24,7 +25,7 @@
 //   }
 // }
 
-.form-control:focus {
+.form-control:focus, .custom-select:focus {
     border-color: rgba(82,168,236,.8);
     border-radius: 4px;
     outline: 0;

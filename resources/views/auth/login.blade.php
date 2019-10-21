@@ -26,6 +26,7 @@
                         <div class="card-body">
                             <h1>Login</h1>
                             <p class="text-muted">Sign In to your account</p>
+                            @include('flash')
                             <form method="POST" action="{{ route('login') }}">
                                 @csrf
                                 <div class="input-group mb-3">

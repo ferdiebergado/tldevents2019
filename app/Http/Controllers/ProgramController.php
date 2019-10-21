@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Program;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProgramRequest;
 
 class ProgramController extends Controller
 {
@@ -14,15 +15,15 @@ class ProgramController extends Controller
      */
     public function index(Request $request)
     {
-        $programs = Program::latest()->get();
+        $model = Program::latest()->get();
 
         if ($request->isXmlHttpRequest()) {
             return response()->json(
-                ['data' => $programs]
+                ['data' => $model]
             );
         }
 
-        return view('program.index', compact('programs'));
+        return view('program.index', compact('model'));
     }
 
     /**
@@ -33,7 +34,7 @@ class ProgramController extends Controller
     public function create()
     {
         $program = new Program();
-        return view('program.create', compact('program'));
+        return view('program.form', ['model' => $program, 'task' => 'create']);
     }
 
     /**
@@ -42,9 +43,13 @@ class ProgramController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProgramRequest $request)
     {
-        //
+        Program::firstOrCreate($request->validated());
+
+        session()->flash('success', __('messages.success'));
+
+        return redirect()->route('programs.index');
     }
 
     /**
@@ -55,7 +60,7 @@ class ProgramController extends Controller
      */
     public function show(Program $program)
     {
-        //
+        return view('program.show', ['model' => $program, 'task' => 'show']);
     }
 
     /**
@@ -66,7 +71,7 @@ class ProgramController extends Controller
      */
     public function edit(Program $program)
     {
-        //
+        return view('program.form', ['model' => $program, 'task' => 'edit']);
     }
 
     /**
@@ -76,9 +81,13 @@ class ProgramController extends Controller
      * @param  \App\Program  $program
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Program $program)
+    public function update(ProgramRequest $request, Program $program)
     {
-        //
+        $program->update($request->validated());
+
+        session()->flash('info', __('messages.updated'));
+
+        return redirect()->route('programs.index');
     }
 
     /**

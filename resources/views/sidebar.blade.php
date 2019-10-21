@@ -9,19 +9,19 @@
                     <span class="badge badge-info">NEW</span>
                 </a>
             </li>
-            <li class="nav-title">Theme</li>
+            <li class="nav-title">MAIN NAVIGATION</li>
             <li class="nav-item">
                 <a class="nav-link" href="colors.html">
-                    <i class="nav-icon icon-drop"></i> Colors</a>
+                    <i class="nav-icon icon-event"></i> My Events</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="typography.html">
-                    <i class="nav-icon icon-pencil"></i> Typography</a>
+                    <i class="nav-icon icon-pin"></i> My Assignment</a>
             </li>
 
             @if (auth()->user()->role === 1)
 
-            <li class="nav-title">Administration</li>
+            <li class="nav-title">ADMINISTRATION</li>
             <li class="nav-item nav-dropdown">
                 <a class="nav-link nav-dropdown-toggle" href="#">
                     <i class="nav-icon icon-puzzle"></i> Base</a>
@@ -87,7 +87,11 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('programs.index') }}">
-                    <i class="nav-icon icon-pie-chart"></i> Programs</a>
+                    <i class="nav-icon icon-organization"></i> Programs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('events.index') }}">
+                    <i class="nav-icon icon-event"></i> Events</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="google-maps.html">

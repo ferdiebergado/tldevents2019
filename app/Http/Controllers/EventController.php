@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Event;
 use Illuminate\Http\Request;
+use App\Http\Requests\EventRequest;
 
 class EventController extends Controller
 {
@@ -12,9 +13,17 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $model = Event::latest()->get();
+
+        if ($request->isXmlHttpRequest()) {
+            return response()->json(
+                ['data' => $model]
+            );
+        }
+
+        return view('event.index', compact('model'));
     }
 
     /**
@@ -24,7 +33,9 @@ class EventController extends Controller
      */
     public function create()
     {
-        //
+        $model = new Event();
+        $task = 'create';
+        return view('event.form', compact('model', 'task'));
     }
 
     /**
@@ -33,9 +44,13 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EventRequest $request)
     {
-        //
+        Event::firstOrCreate($request->validated());
+
+        session()->flash('success', __('messages.success'));
+
+        return redirect()->route('events.index');
     }
 
     /**
@@ -46,7 +61,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        return view('event.show', ['model' => $event, 'task' => 'show']);
     }
 
     /**
@@ -57,7 +72,7 @@ class EventController extends Controller
      */
     public function edit(Event $event)
     {
-        //
+        return view('event.form', ['model' => $event, 'task' => 'edit']);
     }
 
     /**
@@ -67,9 +82,13 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Event $event)
+    public function update(EventRequest $request, Event $event)
     {
-        //
+        $event->update($request->validated());
+
+        session()->flash('info', __('messages.updated'));
+
+        return redirect()->route('events.index');
     }
 
     /**

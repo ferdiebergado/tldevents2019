@@ -2,14 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Program;
+use App\Event;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
-class ProgramControllerTest extends TestCase
+class EventControllerTest extends TestCase
 {
     use WithoutMiddleware;
     use DatabaseTransactions;
@@ -23,7 +23,7 @@ class ProgramControllerTest extends TestCase
     public function testStoreWithInvalidData()
     {
         foreach ($this->dataSet() as $value) {
-            $response = $this->post('/admin/programs', $value);
+            $response = $this->post('/admin/events', $value);
 
             $response->assertSessionHasErrors();
         }
@@ -31,15 +31,16 @@ class ProgramControllerTest extends TestCase
 
     public function testStore()
     {
-        $program = [
-            'title' => 'test program 2',
-            'key_stage' => 4
+        $event = [
+            'title' => 'sample event title',
+            'started_at' => '2019/12/3',
+            'ended_at' => '2019/12/6'
         ];
 
-        $response = $this->post('/admin/programs', $program);
+        $response = $this->post('/admin/events', $event);
 
-        $this->assertDatabaseHas('programs', $program);
-        $response->assertRedirect('/admin/programs');
+        $this->assertDatabaseHas('events', $event);
+        $response->assertRedirect('/admin/events');
         $response->assertSessionHasNoErrors();
         $response->assertSessionHas('success');
         $this->assertEquals(session()->get('success'), __('messages.success'));
@@ -47,15 +48,20 @@ class ProgramControllerTest extends TestCase
 
     public function testUpdate()
     {
-        $updates = [
-            'title' => 'updated program',
-            'key_stage' => 3
-        ];
+        $event = factory(Event::class)->create();
 
-        $response = $this->put('/admin/programs/1', $updates);
+        $event->title = 'updated event';
 
-        // $this->assertDatabaseHas('programs', $updates);
-        $response->assertRedirect('/admin/programs');
+        // $updates = [
+        //     'title' => 'updated event',
+        //     'started_at' => '2020/1/12',
+        //     'ended_at' => '2020/1/13'
+        // ];
+
+        $response = $this->put('/admin/events/' . $event->id, $event->toArray());
+
+        $this->assertDatabaseHas('events', ['id' => $event->id, 'title' => $event->title]);
+        $response->assertRedirect('/admin/events');
         $response->assertSessionHasNoErrors();
         $response->assertSessionHas('info');
         $this->assertEquals(session()->get('info'), __('messages.updated'));
@@ -66,11 +72,13 @@ class ProgramControllerTest extends TestCase
         return [
             [
                 'title' => null,
-                'key_stage' => null
+                'started_at' => null,
+                'ended_at' => null
             ],
             [
                 'title' => 'valid title',
-                'key_stage' => 'invalid'
+                'started_at' => 'stringdate',
+                'ended_at' => 123
             ]
         ];
     }
