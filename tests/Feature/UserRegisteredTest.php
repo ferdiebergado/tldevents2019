@@ -26,8 +26,6 @@ class UserRegisteredTest extends TestCase
             '_token' => csrf_token()
         ]);
 
-        $response->assertRedirect('/login');
-
-        // $response->assertStatus(200);
+        $response->assertRedirect('/home');
     }
 }

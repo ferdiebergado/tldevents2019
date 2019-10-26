@@ -35,11 +35,11 @@ import VueBootstrap4Table from "vue-bootstrap4-table";
 import axios from "axios";
 
 export default {
-  name: "ProgramsTable",
+  name: "ProgramsDatatable",
   props: {
     programs: {
-      type: Array,
-      default: []
+      type: String,
+      default: ""
     }
   },
   data: function() {

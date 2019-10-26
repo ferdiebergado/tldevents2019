@@ -24,3 +24,8 @@ Route::group(['middleware' => ['verified', 'auth', 'active']], function () {
         Route::resource('events', 'EventController');
     });
 });
+
+/*
+ * Participants Routes
+ */
+Route::resource('participants', 'ParticipantController');

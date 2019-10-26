@@ -35,7 +35,7 @@ import VueBootstrap4Table from "vue-bootstrap4-table";
 import axios from "axios";
 
 export default {
-  name: "EventsTable",
+  name: "EventsDatatable",
   props: {
     events: {
       type: Array,

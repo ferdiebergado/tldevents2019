@@ -20,6 +20,7 @@
 <body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show">
 
     <div id="app">
+
         @include('header')
 
         <div class="app-body">
@@ -27,7 +28,6 @@
         </div>
 
         <main class="main">
-
             @include('breadcrumbs')
             <div class="container-fluid">
                 <div id="ui-view">
@@ -36,7 +36,9 @@
             </div>
         </main>
     </div>
+
     @include('footer')
+
 </body>
 
 </html>

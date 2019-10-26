@@ -26,7 +26,7 @@ class EventRequest extends FormRequest
         return [
             'title' => 'required|min:6|max:255',
             'started_at' => 'required|date',
-            'ended_at' => 'required|date|after:started_at'
+            'ended_at' => 'required|date|after_or_equal:started_at'
         ];
     }
 }

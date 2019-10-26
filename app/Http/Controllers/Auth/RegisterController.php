@@ -75,7 +75,7 @@ class RegisterController extends Controller
     //  */
     // protected function registered(Request $request, $user)
     // {
-    //     $this->guard()->logout();
-    //     return redirect('/login')->with('status', __('messages.activationsent'));
+    //     // $this->guard()->logout();
+    //     return redirect()->route('login')->with('info', __('messages.activationsent'));
     // }
 }

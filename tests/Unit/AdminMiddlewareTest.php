@@ -12,7 +12,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class RedirectIfNotActiveMiddlewareTest extends TestCase
+class AdminMiddlewareTest extends TestCase
 {
     /**
      * Test inactive users are redirected
@@ -25,7 +25,7 @@ class RedirectIfNotActiveMiddlewareTest extends TestCase
 
         $this->actingAs($user);
 
-        $request = Request::create('/admin/decompose');
+        $request = Request::create('/admin/programs');
 
         $middleware = new Admin();
 
@@ -47,7 +47,7 @@ class RedirectIfNotActiveMiddlewareTest extends TestCase
 
         $this->actingAs($user);
 
-        $request = Request::create('/admin/decompose');
+        $request = Request::create('/admin/programs');
 
         $middleware = new Admin();
 

@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\User;
-use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Http\Request;
 use App\Http\Middleware\RedirectIfNotActive;
@@ -13,6 +12,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RedirectIfNotActiveMiddlewareTest extends TestCase
 {
+    use DatabaseTransactions;
+
     /**
      * Test inactive users are redirected
      * @test
@@ -20,7 +21,7 @@ class RedirectIfNotActiveMiddlewareTest extends TestCase
      */
     public function testInactiveUserIsRedirected()
     {
-        $user = factory(User::class)->make(['is_active' => false]);
+        $user = factory(User::class)->create(['is_active' => false]);
 
         $this->actingAs($user);
 
@@ -42,7 +43,7 @@ class RedirectIfNotActiveMiddlewareTest extends TestCase
      */
     public function testActiveUserIsNotRedirected()
     {
-        $user = factory(User::class)->make();
+        $user = factory(User::class)->create();
 
         $this->actingAs($user);
 

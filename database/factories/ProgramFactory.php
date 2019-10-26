@@ -1,12 +1,12 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Program;
 use Faker\Generator as Faker;
 
-$factory->define(Program::class, function (Faker $faker) {
+$factory->define(App\Program::class, function (Faker $faker) {
     return [
-        //
+        'title' => $faker->text,
+        'key_stage' => $faker->numberBetween(1, 4),
     ];
 });

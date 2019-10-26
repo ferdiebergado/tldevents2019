@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -46,8 +46,22 @@ class LoginController extends Controller
     {
         $user->timestamps = false;
         $user->update([
-            'last_login_at' => Carbon::now()->toDateTimeString(),
+            'last_login_at' => now()->toDateTimeString(),
             'last_login_ip' => $request->ip()
         ]);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function loggedOut(Request $request)
+    {
+        $response = new RedirectResponse('/');
+
+        $response->header('Pragma', 'no-cache');
+        $response->header('Expires', 'Fri, 01 Jan 1990 00:00:00 GMT');
+        $response->header('Cache-Control', 'no-cache, must-revalidate, no-store, max-age=0, private');
+
+        return $response;
     }
 }

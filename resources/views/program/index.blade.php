@@ -12,7 +12,7 @@
                         class="icon-plus"></i> NEW</a>
             </div>
         </div>
-        <programs-table programs="{{ json_encode($model) }}"></programs-table>
+        <programs-datatable programs="{{ json_encode($model) }}"></programs-datatable>
     </div>
 </div>
 

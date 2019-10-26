@@ -52,11 +52,7 @@ class EventControllerTest extends TestCase
 
         $event->title = 'updated event';
 
-        // $updates = [
-        //     'title' => 'updated event',
-        //     'started_at' => '2020/1/12',
-        //     'ended_at' => '2020/1/13'
-        // ];
+        dump($event->toArray());
 
         $response = $this->put('/admin/events/' . $event->id, $event->toArray());
 
