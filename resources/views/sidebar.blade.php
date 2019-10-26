@@ -94,6 +94,10 @@
                     <i class="nav-icon icon-event"></i> Events</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('participants.index') }}">
+                    <i class="nav-icon icon-event"></i> Participants</a>
+            </li>            
+            <li class="nav-item">
                 <a class="nav-link" href="google-maps.html">
                     <i class="nav-icon icon-map"></i> Google Maps
                     <span class="badge badge-danger">PRO</span>

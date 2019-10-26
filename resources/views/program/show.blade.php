@@ -3,8 +3,10 @@
 @section('content')
 
 <div class="card">
-    <h6 class="card-header">{{ ucfirst($task) }} Program <small class="text-muted">View a program.</small></h6>
+    <h6 class="card-header">{{ ucfirst($task) }} Program <small class="text-muted">View a program.</small><span
+            class="float-right"><a href="{{ route('programs.create') }}"><i class="icon-plus"></i> New</a></span></h6>
     <div class="card-body">
+        @include('flash')
         <div class="form-group row">
             <label for="staticId" class="col-sm-2 col-form-label">ID</label>
             <div class="col-sm-10">
@@ -25,7 +27,10 @@
                     value="{{ $model->key_stage }}">
             </div>
         </div>
-        <a role="button" class="btn btn-secondary" href="{{ route('programs.index') }}">Back to List</a>
+        <a role="button" class="btn btn-primary" href="{{ route('programs.edit', ['program' => $model->id]) }}"><i
+                class="icon-pencil"></i> Edit</a>
+        <a role="button" class="btn btn-secondary" href="{{ route('programs.index') }}"><i class="icon-list"></i> Back
+            to List</a>
     </div>
 </div>
 @endsection

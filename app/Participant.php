@@ -2,28 +2,53 @@
 
 namespace App;
 
-use App\User;
-use Illuminate\Database\Eloquent\Model;
-
-class Participant extends Model
+class Participant extends BaseModel
 {
-    protected $fillable = ['name', 'description', 'creator_id'];
+    protected $fillable = [
+        'last_name',
+        'first_name',
+        'mi',
+        'sex',
+        'station',
+        'mobile',
+        'email'
+    ];
 
-    public function getNameLinkAttribute()
+    protected $casts = [
+        'mobile' => 'array',
+        'email' => 'array'
+    ];
+
+    public function setLastNameAttribute($value)
     {
-        $title = __('app.show_detail_title', [
-            'name' => $this->name, 'type' => __('participant.participant'),
-        ]);
-        $link = '<a href="'.route('participants.show', $this).'"';
-        $link .= ' title="'.$title.'">';
-        $link .= $this->name;
-        $link .= '</a>';
-
-        return $link;
+        $this->attributes['last_name'] = ucfirst($value);
     }
 
-    public function creator()
+    public function setFirstNameAttribute($value)
     {
-        return $this->belongsTo(User::class);
+        $this->attributes['first_name'] = ucfirst($value);
+    }
+
+    public function setMiAttribute($value)
+    {
+        $this->attributes['mi'] = strtoupper(str_replace('.', '', $value));
+    }
+
+    public function getMobileAttribute($value)
+    {
+        if (null === $value) {
+            return $value;
+        }
+
+        return implode(', ', json_decode($value));
+    }
+
+    public function getEmailAttribute($value)
+    {
+        if (null === $value) {
+            return $value;
+        }
+
+        return implode(', ', json_decode($value));
     }
 }

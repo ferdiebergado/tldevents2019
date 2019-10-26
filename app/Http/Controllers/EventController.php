@@ -46,11 +46,11 @@ class EventController extends Controller
      */
     public function store(EventRequest $request)
     {
-        Event::firstOrCreate($request->validated());
+        $model = Event::firstOrCreate($request->validated());
 
         session()->flash('success', __('messages.success'));
 
-        return redirect()->route('events.index');
+        return redirect()->route('events.show', $model);
     }
 
     /**

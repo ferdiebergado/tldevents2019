@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$taskTitle = ucfirst($task)
+@endphp
 
 <div class="card">
-    <h6 class="card-header">{{ ucfirst($task) }} Program <small>Add a new program</small></h6>
+    <h6 class="card-header">{{ $taskTitle }} Participant <small>{{ $taskTitle }} a program.</small></h6>
     <div class="card-body">
         @include('flash')
         <form

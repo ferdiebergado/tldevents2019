@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+$taskTitle = ucfirst($task)
+@endphp
 
 <div class="card">
-    <h6 class="card-header">{{ ucfirst($task) }} Event <small>Add a new event.</small></h6>
+    <h6 class="card-header">{{ $taskTitle }} Participant <small>{{ $taskTitle }} an event.</small></h6>
     <div class="card-body">
         @include('flash')
         <form
@@ -41,8 +44,8 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label for="ended_at">End Date</label>
-                        <input type="date" class="form-control flatpickr @error('ended_at') is-invalid @enderror" name="ended_at"
-                            id="ended_at" aria-describedby="endedAtHelp" placeholder="End Date"
+                        <input type="date" class="form-control flatpickr @error('ended_at') is-invalid @enderror"
+                            name="ended_at" id="ended_at" aria-describedby="endedAtHelp" placeholder="End Date"
                             value="{{ old('ended_at', optional($model)->ended_at) }}" required>
                         @error('ended_at')
                         <span class="invalid-feedback" role="alert">

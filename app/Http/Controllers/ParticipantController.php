@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Participant;
 use Illuminate\Http\Request;
+use App\Http\Requests\ParticipantRequest;
+use Illuminate\Support\Arr;
 
 class ParticipantController extends Controller
 {
@@ -12,13 +14,17 @@ class ParticipantController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
-        $participantQuery = Participant::query();
-        $participantQuery->where('name', 'like', '%'.request('q').'%');
-        $participants = $participantQuery->paginate(25);
+        $model = Participant::orderBy('last_name')->orderBy('first_name')->get();
 
-        return view('participants.index', compact('participants'));
+        if ($request->isXmlHttpRequest()) {
+            return response()->json([
+                'data' => $model
+            ]);
+        }
+
+        return view('participant.index', compact('model'));
     }
 
     /**
@@ -28,29 +34,23 @@ class ParticipantController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', new Participant);
+        $model = new Participant();
+        $task = 'create';
 
-        return view('participants.create');
+        return view('participant.form', compact('model', 'task'));
     }
 
     /**
      * Store a newly created participant in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ParticipantRequest  $request
      * @return \Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
+    public function store(ParticipantRequest $request)
     {
-        $this->authorize('create', new Participant);
-
-        $newParticipant = $request->validate([
-            'name'        => 'required|max:60',
-            'description' => 'nullable|max:255',
-        ]);
-        $newParticipant['creator_id'] = auth()->id();
-
-        $participant = Participant::create($newParticipant);
-
+        $validated = $request->validated();
+        $participant = Participant::firstOrCreate(Arr::only($validated, ['last_name', 'first_name', 'mi', 'sex']), Arr::only($validated, ['station', 'mobile', 'email']));
+        session()->flash('success', __('messages.success'));
         return redirect()->route('participants.show', $participant);
     }
 
@@ -62,7 +62,7 @@ class ParticipantController extends Controller
      */
     public function show(Participant $participant)
     {
-        return view('participants.show', compact('participant'));
+        return view('participant.show', ['model' => $participant, 'task' => 'show']);
     }
 
     /**
@@ -73,9 +73,7 @@ class ParticipantController extends Controller
      */
     public function edit(Participant $participant)
     {
-        $this->authorize('update', $participant);
-
-        return view('participants.edit', compact('participant'));
+        return view('participant.form', ['model' => $participant, 'task' => 'edit']);
     }
 
     /**
@@ -85,15 +83,11 @@ class ParticipantController extends Controller
      * @param  \App\Participant  $participant
      * @return \Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Participant $participant)
+    public function update(ParticipantRequest $request, Participant $participant)
     {
-        $this->authorize('update', $participant);
+        $participant->update($request->validated());
 
-        $participantData = $request->validate([
-            'name'        => 'required|max:60',
-            'description' => 'nullable|max:255',
-        ]);
-        $participant->update($participantData);
+        session()->flash('info', __('messages.updated'));
 
         return redirect()->route('participants.show', $participant);
     }

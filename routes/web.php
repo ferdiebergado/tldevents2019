@@ -22,10 +22,6 @@ Route::group(['middleware' => ['verified', 'auth', 'active']], function () {
     Route::group(['prefix' => '/admin', 'middleware' => ['admin']], function () {
         Route::resource('programs', 'ProgramController');
         Route::resource('events', 'EventController');
+        Route::resource('participants', 'ParticipantController');
     });
 });
-
-/*
- * Participants Routes
- */
-Route::resource('participants', 'ParticipantController');

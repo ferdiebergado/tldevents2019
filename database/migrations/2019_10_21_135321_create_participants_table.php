@@ -15,12 +15,14 @@ class CreateParticipantsTable extends Migration
     {
         Schema::create('participants', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 60);
-            $table->string('description')->nullable();
-            $table->unsignedBigInteger('creator_id');
+            $table->string('last_name', 60);
+            $table->string('first_name', 60);
+            $table->string('mi', 3);
+            $table->char('sex');
+            $table->string('station');
+            $table->json('mobile');
+            $table->json('email')->nullable();
             $table->timestamps();
-
-            $table->foreign('creator_id')->references('id')->on('users')->onDelete('restrict');
         });
     }
 

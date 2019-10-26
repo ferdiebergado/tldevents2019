@@ -45,11 +45,11 @@ class ProgramController extends Controller
      */
     public function store(ProgramRequest $request)
     {
-        Program::firstOrCreate($request->validated());
+        $model = Program::firstOrCreate($request->validated());
 
         session()->flash('success', __('messages.success'));
 
-        return redirect()->route('programs.index');
+        return redirect()->route('programs.show', $model);
     }
 
     /**
@@ -87,7 +87,7 @@ class ProgramController extends Controller
 
         session()->flash('info', __('messages.updated'));
 
-        return redirect()->route('programs.index');
+        return redirect()->route('programs.show', $program);
     }
 
     /**

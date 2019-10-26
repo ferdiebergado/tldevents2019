@@ -1,16 +1,17 @@
 <?php
 
-use App\User;
-use App\Participant;
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
+
 use Faker\Generator as Faker;
 
-$factory->define(Participant::class, function (Faker $faker) {
-
+$factory->define(App\Participant::class, function (Faker $faker) {
     return [
-        'name' => $faker->word,
-        'description' => $faker->sentence,
-        'creator_id' => function () {
-            return factory(User::class)->create()->id;
-        },
+        'last_name' => $faker->lastName,
+        'first_name' => $faker->firstName,
+        'mi' => $faker->randomLetter,
+        'sex' => $faker->randomElement(['M', 'F']),
+        'station' => $faker->company,
+        'mobile' => $faker->phoneNumber,
+        'email' => $faker->email
     ];
 });
