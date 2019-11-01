@@ -9,5 +9,7 @@ $factory->define(App\Event::class, function (Faker $faker) {
         'title' => $faker->text,
         'started_at' => now()->toDateString(),
         'ended_at' => now()->addDays(4)->toDateString(),
+        'grouping' => $faker->randomElement(['R', 'L', 'M']),
+        'type' => $faker->randomElement(['W', 'T', 'C'])
     ];
 });

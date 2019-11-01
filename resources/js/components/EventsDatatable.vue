@@ -9,7 +9,7 @@
       <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
         <a
           class="btn btn-sm btn-light"
-          :href="'/admin/events/' + props.row.id"
+          :href="baseUrl + '/' + props.row.id"
           role="button"
           title="View"
         >
@@ -18,7 +18,7 @@
         </a>
         <a
           class="btn btn-sm btn-primary"
-          :href="'/admin/events/' + props.row.id + '/edit'"
+          :href="baseUrl + '/' + props.row.id + '/edit'"
           role="button"
           title="Edit"
         >
@@ -37,6 +37,10 @@ import axios from "axios";
 export default {
   name: "EventsDatatable",
   props: {
+    url: {
+      type: String,
+      default: ""
+    },
     events: {
       type: Array,
       default: []
@@ -44,6 +48,7 @@ export default {
   },
   data: function() {
     return {
+      baseUrl: this.url,
       rows: JSON.parse(this.events),
       columns: [
         {
@@ -108,7 +113,7 @@ export default {
   },
   methods: {
     fetchData() {
-      axios.get("/admin/events").then(res => {
+      axios.get(this.baseUrl).then(res => {
         this.rows = res.data.data;
       });
     }

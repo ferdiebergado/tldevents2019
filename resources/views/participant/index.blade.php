@@ -3,7 +3,9 @@
 @section('content')
 
 <div class="card">
-    <h6 class="card-header">Participants <small class="text-muted">List of all participants.</small></h6>
+    <h6 class="card-header">
+        <i class="icon-list"></i> Participants <small class="text-muted">List of all participants.</small>
+    </h6>
     <div class="card-body">
         @include('flash')
         <div class="row mb-4">
@@ -12,7 +14,8 @@
                         class="icon-plus"></i> NEW</a>
             </div>
         </div>
-        <participants-datatable participants="{{ json_encode($model) }}"></participants-datatable>
+        <participants-datatable url="{{ route('participants.index') }}" participants="{{ json_encode($model) }}">
+        </participants-datatable>
     </div>
 </div>
 

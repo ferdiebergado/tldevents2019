@@ -62,7 +62,7 @@ class ParticipantController extends Controller
      */
     public function show(Participant $participant)
     {
-        return view('participant.show', ['model' => $participant, 'task' => 'show']);
+        return view('participant.show', ['model' => $participant]);
     }
 
     /**

@@ -3,11 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EventRequest;
+use App\Services\EventService;
 
 class EventController extends Controller
 {
+    private $service;
+
+    public function __construct(EventService $service)
+    {
+        $this->authorizeResource(Event::class, 'event');
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +26,15 @@ class EventController extends Controller
      */
     public function index(Request $request)
     {
-        $model = Event::latest()->get();
+        $role = auth()->user()->role;
+
+        if ($role === 1) {
+            $model = Event::all();
+        }
+
+        if ($role === 2) {
+            $model = Event::whereCreatedBy(auth()->id())->get();
+        }
 
         if ($request->isXmlHttpRequest()) {
             return response()->json(
@@ -25,6 +44,7 @@ class EventController extends Controller
 
         return view('event.index', compact('model'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -44,9 +64,9 @@ class EventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(EventRequest $request)
+    public function store(EventRequest $request, EventService $eventService)
     {
-        $model = Event::firstOrCreate($request->validated());
+        $model = $eventService->save($request, 'store');
 
         session()->flash('success', __('messages.success'));
 
@@ -61,7 +81,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return view('event.show', ['model' => $event, 'task' => 'show']);
+        return view('event.show', ['model' => $event->toArray(), 'task' => 'show']);
     }
 
     /**
@@ -82,13 +102,18 @@ class EventController extends Controller
      * @param  \App\Event  $event
      * @return \Illuminate\Http\Response
      */
-    public function update(EventRequest $request, Event $event)
+    public function update(EventRequest $request, Event $event, EventService $eventService)
     {
-        $event->update($request->validated());
+        $model = $eventService->save($request, 'update', $event);
+
+        // $is_active = $request->has('is_active');
+        // $validated = $request->validated();
+        // $updates = array_merge($validated, compact('is_active'));
+        // $event->update($updates);
 
         session()->flash('info', __('messages.updated'));
 
-        return redirect()->route('events.index');
+        return redirect()->route('events.show', $model);
     }
 
     /**

@@ -1,5 +1,6 @@
 <template>
   <vue-bootstrap4-table
+    :classes="classes"
     :rows="rows"
     :columns="columns"
     :config="config"
@@ -9,7 +10,7 @@
       <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
         <a
           class="btn btn-sm btn-light"
-          :href="'/admin/participants/' + props.row.id"
+          :href="baseUrl + '/' + props.row.id"
           role="button"
           title="View"
         >
@@ -18,7 +19,7 @@
         </a>
         <a
           class="btn btn-sm btn-primary"
-          :href="'/admin/participants/' + props.row.id + '/edit'"
+          :href="baseUrl + '/' + props.row.id + '/edit'"
           role="button"
           title="Edit"
         >
@@ -37,6 +38,10 @@ import axios from "axios";
 export default {
   name: "ParticipantsDatatable",
   props: {
+    url: {
+      type: String,
+      default: ""
+    },
     participants: {
       type: String,
       default: ""
@@ -44,6 +49,7 @@ export default {
   },
   data: function() {
     return {
+      baseUrl: this.url,
       rows: JSON.parse(this.participants),
       columns: [
         {
@@ -139,12 +145,17 @@ export default {
         server_mode: false,
         preservePageOnDataChange: true,
         loaderText: "Updating..."
+      },
+      classes: {
+        table: {
+          "table-sm": true
+        }
       }
     };
   },
   methods: {
     fetchData() {
-      axios.get("/admin/participants").then(res => {
+      axios.get(this.baseUrl).then(res => {
         this.rows = res.data.data;
       });
     }

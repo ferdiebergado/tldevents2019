@@ -11,11 +11,11 @@
             </li>
             <li class="nav-title">MAIN NAVIGATION</li>
             <li class="nav-item">
-                <a class="nav-link" href="colors.html">
+                <a class="nav-link" href="{{ route('events.index') }}">
                     <i class="nav-icon icon-event"></i> My Events</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="typography.html">
+                <a class="nav-link" href="{{ route('events.show', ['event' => $current_event ]) }}">
                     <i class="nav-icon icon-pin"></i> My Assignment</a>
             </li>
 
@@ -95,8 +95,8 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('participants.index') }}">
-                    <i class="nav-icon icon-event"></i> Participants</a>
-            </li>            
+                    <i class="nav-icon icon-people"></i> Participants</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="google-maps.html">
                     <i class="nav-icon icon-map"></i> Google Maps

@@ -11,7 +11,7 @@ $factory->define(App\Participant::class, function (Faker $faker) {
         'mi' => $faker->randomLetter,
         'sex' => $faker->randomElement(['M', 'F']),
         'station' => $faker->company,
-        'mobile' => $faker->phoneNumber,
-        'email' => $faker->email
+        'mobile' => [$faker->numberBetween(9100000000, 9999999999), $faker->numberBetween(9100000000, 9999999999)],
+        'email' => [$faker->email]
     ];
 });

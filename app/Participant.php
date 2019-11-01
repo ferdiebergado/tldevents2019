@@ -2,8 +2,15 @@
 
 namespace App;
 
+use App\Transaction;
+use App\Util\Model\UserStampTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Participant extends BaseModel
 {
+    use SoftDeletes;
+    use UserStampTrait;
+
     protected $fillable = [
         'last_name',
         'first_name',
@@ -50,5 +57,10 @@ class Participant extends BaseModel
         }
 
         return implode(', ', json_decode($value));
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

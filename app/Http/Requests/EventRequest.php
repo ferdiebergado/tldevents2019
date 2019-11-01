@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EventRequest extends FormRequest
 {
@@ -26,7 +27,15 @@ class EventRequest extends FormRequest
         return [
             'title' => 'required|min:6|max:255',
             'started_at' => 'required|date',
-            'ended_at' => 'required|date|after_or_equal:started_at'
+            'ended_at' => 'required|date|after_or_equal:started_at',
+            'type' => [
+                'required',
+                Rule::in(['W', 'T', 'C'])
+            ],
+            'grouping' => [
+                'required',
+                Rule::in(['R', 'L', 'M', 'N'])
+            ]
         ];
     }
 }

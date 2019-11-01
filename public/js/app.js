@@ -4555,6 +4555,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "EventsDatatable",
   props: {
+    url: {
+      type: String,
+      "default": ""
+    },
     events: {
       type: Array,
       "default": []
@@ -4562,6 +4566,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      baseUrl: this.url,
       rows: JSON.parse(this.events),
       columns: [{
         label: "id",
@@ -4622,7 +4627,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchData: function fetchData() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/admin/events").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.baseUrl).then(function (res) {
         _this.rows = res.data.data;
       });
     }
@@ -4711,11 +4716,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ParticipantsDatatable",
   props: {
+    url: {
+      type: String,
+      "default": ""
+    },
     participants: {
       type: String,
       "default": ""
@@ -4723,6 +4733,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      baseUrl: this.url,
       rows: JSON.parse(this.participants),
       columns: [{
         label: "id",
@@ -4808,6 +4819,11 @@ __webpack_require__.r(__webpack_exports__);
         server_mode: false,
         preservePageOnDataChange: true,
         loaderText: "Updating..."
+      },
+      classes: {
+        table: {
+          "table-sm": true
+        }
       }
     };
   },
@@ -4815,7 +4831,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchData: function fetchData() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get("/admin/participants").then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_1___default.a.get(this.baseUrl).then(function (res) {
         _this.rows = res.data.data;
       });
     }
@@ -44948,7 +44964,7 @@ var render = function() {
                   {
                     staticClass: "btn btn-sm btn-light",
                     attrs: {
-                      href: "/admin/events/" + props.row.id,
+                      href: _vm.baseUrl + "/" + props.row.id,
                       role: "button",
                       title: "View"
                     }
@@ -44964,7 +44980,7 @@ var render = function() {
                   {
                     staticClass: "btn btn-sm btn-primary",
                     attrs: {
-                      href: "/admin/events/" + props.row.id + "/edit",
+                      href: _vm.baseUrl + "/" + props.row.id + "/edit",
                       role: "button",
                       title: "Edit"
                     }
@@ -45052,7 +45068,12 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("vue-bootstrap4-table", {
-    attrs: { rows: _vm.rows, columns: _vm.columns, config: _vm.config },
+    attrs: {
+      classes: _vm.classes,
+      rows: _vm.rows,
+      columns: _vm.columns,
+      config: _vm.config
+    },
     on: {
       "refresh-data": function($event) {
         return _vm.fetchData()
@@ -45078,7 +45099,7 @@ var render = function() {
                   {
                     staticClass: "btn btn-sm btn-light",
                     attrs: {
-                      href: "/admin/participants/" + props.row.id,
+                      href: _vm.baseUrl + "/" + props.row.id,
                       role: "button",
                       title: "View"
                     }
@@ -45094,7 +45115,7 @@ var render = function() {
                   {
                     staticClass: "btn btn-sm btn-primary",
                     attrs: {
-                      href: "/admin/participants/" + props.row.id + "/edit",
+                      href: _vm.baseUrl + "/" + props.row.id + "/edit",
                       role: "button",
                       title: "Edit"
                     }
@@ -57418,6 +57439,47 @@ var app = new Vue({
 var flatpickr = __webpack_require__(/*! flatpickr */ "./node_modules/flatpickr/dist/flatpickr.js");
 
 flatpickr('.flatpickr');
+$(document).ready(function () {
+  var mobileTagInput = $('.mobile-tagsinput');
+  var emailTagInput = $('.email-tagsinput');
+  mobileTagInput.tagsinput({
+    focusClass: 'custom-focus',
+    maxChars: 11
+  });
+  emailTagInput.tagsinput({
+    focusClass: 'custom-focus'
+  });
+  mobileTagInput.on('beforeItemAdd', function (e) {
+    var numeric = /^\d+$/;
+    var mobileHelp = $('#mobileHelp');
+    mobileHelp.hide();
+
+    if (e.item.length < 11) {
+      mobileHelp.text(' Mobile should be exactly 11 digits.');
+      mobileHelp.show();
+      e.cancel = true;
+      return;
+    }
+
+    if (!numeric.test(e.item)) {
+      mobileHelp.text('Mobile should only contain numbers.');
+      mobileHelp.show();
+      e.cancel = true;
+      return;
+    }
+  });
+  emailTagInput.on('beforeItemAdd', function (e) {
+    var emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+    var emailHelp = $('#emailHelp');
+    emailHelp.hide();
+
+    if (!e.item.match(emailformat)) {
+      emailHelp.text('Invalid email.');
+      emailHelp.show();
+      return e.cancel = true;
+    }
+  });
+});
 
 /***/ }),
 

@@ -35,3 +35,52 @@ const app = new Vue({
 const flatpickr = require("flatpickr");
 
 flatpickr('.flatpickr');
+
+$(document).ready(function () {
+
+    const mobileTagInput = $('.mobile-tagsinput');
+    const emailTagInput = $('.email-tagsinput');
+
+    mobileTagInput.tagsinput({
+        focusClass: 'custom-focus',
+        maxChars: 11
+    });
+
+    emailTagInput.tagsinput({
+        focusClass: 'custom-focus'
+    });
+
+    mobileTagInput.on('beforeItemAdd', function (e) {
+
+        const numeric = /^\d+$/;
+        const mobileHelp = $('#mobileHelp');
+        mobileHelp.hide();
+
+        if (e.item.length < 11) {
+            mobileHelp.text(' Mobile should be exactly 11 digits.');
+            mobileHelp.show();
+            e.cancel = true;
+            return;
+        }
+
+        if (!numeric.test(e.item)) {
+            mobileHelp.text('Mobile should only contain numbers.');
+            mobileHelp.show();
+            e.cancel = true;
+            return;
+        }
+    });
+
+    emailTagInput.on('beforeItemAdd', function (e) {
+        const emailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+        const emailHelp = $('#emailHelp');
+
+        emailHelp.hide();
+
+        if (!e.item.match(emailformat)) {
+            emailHelp.text('Invalid email.');
+            emailHelp.show();
+            return e.cancel = true;
+        }
+    })
+});

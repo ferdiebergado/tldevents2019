@@ -23,7 +23,7 @@ class EventControllerTest extends TestCase
     public function testStoreWithInvalidData()
     {
         foreach ($this->dataSet() as $value) {
-            $response = $this->post('/admin/events', $value);
+            $response = $this->post('/events', $value);
 
             $response->assertSessionHasErrors();
         }
@@ -33,14 +33,15 @@ class EventControllerTest extends TestCase
     {
         $event = [
             'title' => 'sample event title',
-            'started_at' => '2019/12/3',
-            'ended_at' => '2019/12/6'
+            'started_at' => '2019-12-3',
+            'ended_at' => '2019-12-6',
+            'is_active' => true
         ];
 
-        $response = $this->post('/admin/events', $event);
+        $response = $this->post('/events', $event);
 
         $this->assertDatabaseHas('events', $event);
-        $response->assertRedirect('/admin/events/' . $event->id);
+        $response->assertRedirect('/events/' . $event->id);
         $response->assertSessionHasNoErrors();
         $response->assertSessionHas('success');
         $this->assertEquals(session()->get('success'), __('messages.success'));
@@ -52,10 +53,10 @@ class EventControllerTest extends TestCase
 
         $event->title = 'updated event';
 
-        $response = $this->put('/admin/events/' . $event->id, $event->toArray());
+        $response = $this->put('/events/' . $event->id, $event->toArray());
 
         // $this->assertDatabaseHas('events', ['id' => $event->id, 'title' => $event->title]);
-        $response->assertRedirect('/admin/events/' . $event->id);
+        $response->assertRedirect('/events/' . $event->id);
         $response->assertSessionHasNoErrors();
         $response->assertSessionHas('info');
         $this->assertEquals(session()->get('info'), __('messages.updated'));

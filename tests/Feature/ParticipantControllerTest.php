@@ -36,7 +36,7 @@ class ParticipantControllerTest extends TestCase
         $response = $this->get('/admin/participants');
 
         $response->assertStatus(200);
-        $response->assertSee('List of all participants.');
+        $response->assertSeeText('List of all participants.');
     }
 
     public function testCreate()
@@ -71,7 +71,7 @@ class ParticipantControllerTest extends TestCase
 
         $response = $this->followRedirects($response);
         $response->assertSuccessful();
-        $response->assertSeeText('View a participant.');
+        $response->assertSeeText('View a participant info.');
         $response->assertSee($participant['last_name']);
     }
 
@@ -87,13 +87,13 @@ class ParticipantControllerTest extends TestCase
     {
         $response = $this->get('/admin/participants/1');
         $response->assertSuccessful();
-        $response->assertSeeText('View a participant.');
+        $response->assertSeeText('View a participant info.');
         $response->assertSee($this->participant->last_name);
     }
 
     public function testUpdate()
     {
-        $this->participant->mobile = '09998887654';
+        $this->participant->mobile = ['09998887654'];
         $response = $this->put('/admin/participants/' . $this->participant->id, $this->participant->toArray());
         // $this->assertDatabaseHas('participants', ['id' => $this->participant->id, 'mobile' => ['09998887654']]);
         $response->assertSessionHasNoErrors();
@@ -101,6 +101,6 @@ class ParticipantControllerTest extends TestCase
         $this->assertEquals(session()->get('info'), __('messages.updated'));
         $response->assertRedirect('/admin/participants/' . $this->participant->id);
         $response = $this->followRedirects($response);
-        $response->assertSeeText('View a participant.');
+        $response->assertSeeText('View a participant info.');
     }
 }
