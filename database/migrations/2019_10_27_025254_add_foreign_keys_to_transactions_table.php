@@ -14,7 +14,7 @@ class AddForeignKeysToTransactionsTable extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->integer('participant_role_id')->unsigned();
+            $table->integer('participant_role_id')->unsigned()->default(0);
             $table->foreign('participant_role_id')->references('id')->on('participant_roles');
         });
     }

@@ -14,8 +14,8 @@ class AddFieldsToEventsTable extends Migration
     public function up()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->char('grouping')->comment('R: By Region; L: By LearningArea; M: By Language');
-            $table->char('type')->comment('W: Workshop/Writeshop; T: Training; C: Conference/Summits');
+            $table->char('grouping')->default('')->comment('R: By Region; L: By LearningArea; M: By Language');
+            $table->char('type')->default('')->comment('W: Workshop/Writeshop; T: Training; C: Conference/Summits');
         });
     }
 

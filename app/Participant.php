@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Transaction;
+use App\Util\Model\SearchableTrait;
 use App\Util\Model\UserStampTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -10,6 +11,7 @@ class Participant extends BaseModel
 {
     use SoftDeletes;
     use UserStampTrait;
+    use SearchableTrait;
 
     protected $fillable = [
         'last_name',
@@ -24,6 +26,14 @@ class Participant extends BaseModel
     protected $casts = [
         'mobile' => 'array',
         'email' => 'array'
+    ];
+
+    protected $searchable = [
+        'last_name',
+        'first_name',
+        'station',
+        'mobile',
+        'email'
     ];
 
     public function setLastNameAttribute($value)
@@ -43,24 +53,27 @@ class Participant extends BaseModel
 
     public function getMobileAttribute($value)
     {
-        if (null === $value) {
-            return $value;
-        }
-
-        return implode(', ', json_decode($value));
+        return $this->stringify($value);
     }
 
     public function getEmailAttribute($value)
     {
-        if (null === $value) {
-            return $value;
-        }
-
-        return implode(', ', json_decode($value));
+        return $this->stringify($value);
     }
 
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    private function stringify($value)
+    {
+        if (null === $value) {
+            return $value;
+        }
+
+        $str = json_decode($value);
+
+        return implode(', ', (array) $str);
     }
 }

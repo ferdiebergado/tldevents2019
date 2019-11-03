@@ -1,10 +1,14 @@
 @if (session()->has('success'))
 
 <div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong><span class="icon-check"></span> Success!</strong> {{ session('success')}}
+  <h4 class="alert-heading"><span class="icon-check"></span> Success!</h4>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
+  <hr>
+  <p class="mb-0">
+    {{ session('success')}}
+  </p>
 </div>
 
 @endif
@@ -23,10 +27,14 @@
 @if (session()->has('info'))
 
 <div class="alert alert-info alert-dismissible fade show" role="alert">
-  <strong><span class="icon-info"></span> Info:</strong> {{ session('info')}}
+  <h4 class="alert-heading"><span class="icon-info"></span> Info:</h4>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
+  <hr>
+  <p class="mb-0">
+    {{ session('info')}}
+  </p>
 </div>
 
 @endif
@@ -45,11 +53,12 @@
 @if (session()->has('errors'))
 
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <p><i class="icon-exclamation"></i> There was an error.</p>
+  <h4 class="alert-heading"><i class="icon-exclamation"></i> There was an error.</h4>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
-  <ul>
+  <hr>
+  <ul class="mb-0">
     @foreach ($errors->all() as $message)
     <li>{{ $message }}</li>
     @endforeach

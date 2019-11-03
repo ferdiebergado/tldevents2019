@@ -1,12 +1,11 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\LearningArea;
 use Faker\Generator as Faker;
 
-$factory->define(LearningArea::class, function (Faker $faker) {
+$factory->define(App\LearningArea::class, function (Faker $faker) {
     return [
-        //
+        'name' => $faker->name,
     ];
 });

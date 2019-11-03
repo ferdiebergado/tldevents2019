@@ -12,10 +12,10 @@
             <li class="nav-title">MAIN NAVIGATION</li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('events.index') }}">
-                    <i class="nav-icon icon-event"></i> My Events</a>
+                    <i class="nav-icon icon-event"></i> Events</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('events.show', ['event' => $current_event ]) }}">
+                <a class="nav-link" href="{{ route('participants.index') }}">
                     <i class="nav-icon icon-pin"></i> My Assignment</a>
             </li>
 

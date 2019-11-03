@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="card">
-    <h6 class="card-header">Events <small class="text-muted">List of all events</small></h6>
+    <h6 class="card-header">Events <small class="text-muted">List of events.</small></h6>
     <div class="card-body">
         @include('flash')
         @can('create', App\Event::class)

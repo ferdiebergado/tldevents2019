@@ -4,6 +4,7 @@ namespace App;
 
 use App\Assignment;
 use App\Transaction;
+use App\Util\Model\SearchableTrait;
 use Illuminate\Support\Carbon;
 use App\Util\Model\UserStampTrait;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,7 @@ class Event extends BaseModel
 {
     use SoftDeletes;
     use UserStampTrait;
+    use SearchableTrait;
 
     protected $fillable = [
         'title',
@@ -30,7 +32,12 @@ class Event extends BaseModel
 
     protected $appends = [
         'type_name',
-        'grouping_name'
+        'grouping_name',
+        'duration_date'
+    ];
+
+    protected $searchable = [
+        'title'
     ];
 
     public function getStartedAtAttribute($value)
@@ -74,6 +81,23 @@ class Event extends BaseModel
                 return 'No Grouping';
                 break;
         }
+    }
+
+    public function getDurationDateAttribute()
+    {
+        $started = Carbon::parse($this->attributes['started_at']);
+        $ended = Carbon::parse($this->attributes['ended_at']);
+        $duration = '';
+
+        if ($started->month === $ended->month) {
+            $duration = $started->monthName . ' ' . $started->day . '-';
+        }
+
+        if ($started->month < $ended->month) {
+            $duration = $started->monthName . ' ' . $started->day . ' to ' . $ended->monthName;
+        }
+
+        return $duration . $ended->day . ', ' . $ended->year;
     }
 
     public function assignments()

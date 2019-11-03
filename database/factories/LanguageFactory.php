@@ -1,12 +1,11 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Language;
 use Faker\Generator as Faker;
 
-$factory->define(Language::class, function (Faker $faker) {
+$factory->define(App\Language::class, function (Faker $faker) {
     return [
-        //
+        'name' => $faker->name,
     ];
 });

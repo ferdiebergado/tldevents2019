@@ -5,6 +5,7 @@
  */
 
 require('./bootstrap');
+require('@coreui/coreui/dist/js/coreui');
 require('bootstrap4-tagsinput/tagsinput');
 
 window.Vue = require('vue');

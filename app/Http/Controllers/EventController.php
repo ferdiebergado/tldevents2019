@@ -3,20 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Event;
-use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EventRequest;
+use App\Repositories\EventRepositoryInterface;
 use App\Services\EventService;
 
 class EventController extends Controller
 {
-    private $service;
-
-    public function __construct(EventService $service)
+    public function __construct()
     {
         $this->authorizeResource(Event::class, 'event');
-        $this->service = $service;
     }
 
     /**
@@ -24,17 +20,9 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, EventRepositoryInterface $eventRepository)
     {
-        $role = auth()->user()->role;
-
-        if ($role === 1) {
-            $model = Event::all();
-        }
-
-        if ($role === 2) {
-            $model = Event::whereCreatedBy(auth()->id())->get();
-        }
+        $model = $eventRepository->latest();
 
         if ($request->isXmlHttpRequest()) {
             return response()->json(
@@ -104,12 +92,7 @@ class EventController extends Controller
      */
     public function update(EventRequest $request, Event $event, EventService $eventService)
     {
-        $model = $eventService->save($request, 'update', $event);
-
-        // $is_active = $request->has('is_active');
-        // $validated = $request->validated();
-        // $updates = array_merge($validated, compact('is_active'));
-        // $event->update($updates);
+        $model = $eventService->save($request, 'update', $event->id);
 
         session()->flash('info', __('messages.updated'));
 

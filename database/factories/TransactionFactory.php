@@ -1,12 +1,25 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Transaction;
 use Faker\Generator as Faker;
 
-$factory->define(Transaction::class, function (Faker $faker) {
+$factory->define(App\Transaction::class, function (Faker $faker) {
     return [
-        //
+        'participant_id' => function () {
+            return factory(App\Participant::class)->create()->id;
+        },
+        'event_id' => function () {
+            return factory(App\Event::class)->create()->id;
+        },
+        'participant_role_id' => function () {
+            return factory(App\ParticipantRole::class)->create()->id;
+        },
+        'learning_area_id' => function () {
+            return factory(App\LearningArea::class)->create()->id;
+        },
+        'language_id' => function () {
+            return factory(App\Language::class)->create()->id;
+        },
     ];
 });

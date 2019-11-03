@@ -5,20 +5,31 @@ namespace App\Http\Controllers;
 use App\Participant;
 use Illuminate\Http\Request;
 use App\Http\Requests\ParticipantRequest;
-use Illuminate\Support\Arr;
+use App\Services\ParticipantService;
 
 class ParticipantController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Participant::class, 'participant');
+    }
+
     /**
      * Display a listing of the participant.
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index(Request $request, ParticipantService $service)
     {
-        $model = Participant::orderBy('last_name')->orderBy('first_name')->get();
+        $search = null;
 
-        if ($request->isXmlHttpRequest()) {
+        if ($request->has('search')) {
+            $search = $request->search;
+        }
+
+        $model = $service->fetchAll($search);
+
+        if ($request->wantsJson()) {
             return response()->json([
                 'data' => $model
             ]);
@@ -46,10 +57,12 @@ class ParticipantController extends Controller
      * @param  \App\Http\Requests\ParticipantRequest  $request
      * @return \Illuminate\Routing\Redirector
      */
-    public function store(ParticipantRequest $request)
+    public function store(ParticipantRequest $request, ParticipantService $service)
     {
         $validated = $request->validated();
-        $participant = Participant::firstOrCreate(Arr::only($validated, ['last_name', 'first_name', 'mi', 'sex']), Arr::only($validated, ['station', 'mobile', 'email']));
+
+        $participant = $service->store($validated);
+
         session()->flash('success', __('messages.success'));
         return redirect()->route('participants.show', $participant);
     }
@@ -83,9 +96,9 @@ class ParticipantController extends Controller
      * @param  \App\Participant  $participant
      * @return \Illuminate\Routing\Redirector
      */
-    public function update(ParticipantRequest $request, Participant $participant)
+    public function update(ParticipantRequest $request, Participant $participant, ParticipantService $service)
     {
-        $participant->update($request->validated());
+        $service->update($participant->id, $request->validated());
 
         session()->flash('info', __('messages.updated'));
 
@@ -101,8 +114,6 @@ class ParticipantController extends Controller
      */
     public function destroy(Request $request, Participant $participant)
     {
-        $this->authorize('delete', $participant);
-
         $request->validate(['participant_id' => 'required']);
 
         if ($request->get('participant_id') == $participant->id && $participant->delete()) {
@@ -110,5 +121,29 @@ class ParticipantController extends Controller
         }
 
         return back();
+    }
+
+    /**
+     * Show the search form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function search()
+    {
+        return view('participant.search');
+    }
+
+    public function showAddToEventForm(Participant $participant)
+    {
+        return view('participant.form', ['model' => $participant, 'task' => 'addtoevent']);
+    }
+
+    public function addToEvent(ParticipantRequest $request, Participant $participant, ParticipantService $service)
+    {
+        $participant = $service->addToEvent($participant->id, $request->validated());
+
+        session()->flash('info', __('messages.addedToEvent'));
+
+        return redirect()->route('participants.show', $participant);
     }
 }

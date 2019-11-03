@@ -6,19 +6,40 @@
 
 $taskTitle = ucfirst($task);
 
+if (($task === 'create') || ($task === 'addtoevent')) {
+$icon = 'plus';
+}
+
+if ($task === 'edit') {
+$icon = 'pencil';
+}
+
+switch ($task) {
+case 'create':
+$icon = 'plus';
+$action = route('participants.store');
+break;
+case 'edit':
+$icon = 'pencil';
+$action = route('participants.update', ['participant' => $model->id]);
+break;
+case 'addtoevent':
+$icon = 'plus';
+$action = route('participants.add_to_event', ['participant' => $model->id]);
+break;
+}
+
 @endphp
 
 <div class="card">
     <h6 class="card-header">
-        <i class="icon-{{ $task === 'create' ? 'plus' : $task === 'edit' ? 'pencil': '' }}"></i>{{ $taskTitle }}
+        <i class="icon-{{ $icon }}"></i>{{ $taskTitle }}
         Participant
         <small>{{ $taskTitle }} a participant.</small>
     </h6>
     <div class="card-body">
         @include('flash')
-        <form
-            action="{{ $task === 'create' ? route('participants.store') : $task === 'edit' ? route('participants.update', ['participant' => $model->id]) : '' }}"
-            method="POST">
+        <form action="{{ $action }}" method="POST">
             @csrf
             @if ($task === 'edit')
             @method('PUT')
@@ -28,8 +49,8 @@ $taskTitle = ucfirst($task);
                     <div class="form-group">
                         <label for="title">Last Name <small class="text-muted">(*Required)</small></label>
                         <input type="text" class="form-control @error('last_name') is-invalid @enderror"
-                            name="last_name" id="last_name" min="2" max="60" required autofocus
-                            value="{{ old('last_name', optional($model)->last_name) }}" />
+                            name="last_name" id="last_name" min="2" max="60"
+                            value="{{ old('last_name', optional($model)->last_name) }}" required autofocus />
                         <small class="form-text text-muted">
                             &nbsp;Include suffix (if applicable).
                         </small>
@@ -142,6 +163,10 @@ $taskTitle = ucfirst($task);
                     </div>
                 </div>
             </div>
+
+            @if ($task === 'addtoevent')
+            @include('participant.addtoevent')
+            @endif
 
             <div class="row">
                 <div class="col-5">

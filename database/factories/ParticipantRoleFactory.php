@@ -1,12 +1,12 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+/* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\ParticipantRole;
 use Faker\Generator as Faker;
 
-$factory->define(ParticipantRole::class, function (Faker $faker) {
+$factory->define(App\ParticipantRole::class, function (Faker $faker) {
     return [
-        //
+        'name' => $faker->name,
+        'sequence' => $faker->numberBetween(1, 5),
     ];
 });

@@ -2,13 +2,31 @@
 
 namespace App\Policies;
 
-use App\User;
 use App\Participant;
+use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ParticipantPolicy
 {
     use HandlesAuthorization;
+
+    public function before($user, $ability)
+    {
+        if ($user->role === 1) {
+            return true;
+        }
+    }
+
+    /**
+     * Determine whether the user can view any participants.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function viewAny(User $user)
+    {
+        return true;
+    }
 
     /**
      * Determine whether the user can view the participant.
@@ -19,21 +37,18 @@ class ParticipantPolicy
      */
     public function view(User $user, Participant $participant)
     {
-        // Update $user authorization to view $participant here.
         return true;
     }
 
     /**
-     * Determine whether the user can create participant.
+     * Determine whether the user can create participants.
      *
      * @param  \App\User  $user
-     * @param  \App\Participant  $participant
      * @return mixed
      */
-    public function create(User $user, Participant $participant)
+    public function create(User $user)
     {
-        // Update $user authorization to create $participant here.
-        return true;
+        return $user->role === 2;
     }
 
     /**
@@ -45,8 +60,7 @@ class ParticipantPolicy
      */
     public function update(User $user, Participant $participant)
     {
-        // Update $user authorization to update $participant here.
-        return true;
+        return $user->role === 2;
     }
 
     /**
@@ -58,7 +72,30 @@ class ParticipantPolicy
      */
     public function delete(User $user, Participant $participant)
     {
-        // Update $user authorization to delete $participant here.
-        return true;
+        return $user->role === 2;
+    }
+
+    /**
+     * Determine whether the user can restore the participant.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Participant  $participant
+     * @return mixed
+     */
+    public function restore(User $user, Participant $participant)
+    {
+        return $user->role === 2;
+    }
+
+    /**
+     * Determine whether the user can permanently delete the participant.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Participant  $participant
+     * @return mixed
+     */
+    public function forceDelete(User $user, Participant $participant)
+    {
+        return $user->role === 1;
     }
 }

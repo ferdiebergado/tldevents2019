@@ -32,9 +32,17 @@ class ParticipantRequest extends FormRequest
                 'required',
                 Rule::in(['M', 'F'])
             ],
-            'station' => 'max:255',
+            'station' => 'nullable|max:255',
             'mobile.*' => 'required|min:11|regex:/^[0-9]+$/',
-            'email.*' => 'email|max:255'
+            'email.*' => 'nullable|email|max:255',
+            'participant_role_id' => [
+                Rule::requiredIf(function () {
+                    return \Illuminate\Support\Facades\Route::is('participants.add_to_event');
+                }),
+                'numeric'
+            ],
+            'learning_area_id' => 'nullable',
+            'language_id' => 'nullable'
         ];
     }
 
