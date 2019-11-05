@@ -27,7 +27,7 @@
 @if (session()->has('info'))
 
 <div class="alert alert-info alert-dismissible fade show" role="alert">
-  <h4 class="alert-heading"><span class="icon-info"></span> Info:</h4>
+  <h4 class="alert-heading"><span class="icon-info"></span> Info</h4>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -53,7 +53,7 @@
 @if (session()->has('errors'))
 
 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-  <h4 class="alert-heading"><i class="icon-exclamation"></i> There was an error.</h4>
+  <h4 class="alert-heading"><i class="icon-close"></i> Error</h4>
   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
     <span aria-hidden="true">&times;</span>
   </button>

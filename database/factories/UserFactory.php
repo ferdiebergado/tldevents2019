@@ -27,3 +27,7 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
     ];
 });
+
+$factory->state(User::class, 'active', ['is_active' => true]);
+$factory->state(User::class, 'encoder', ['role' => 2]);
+$factory->state(User::class, 'admin', ['role' => 1]);

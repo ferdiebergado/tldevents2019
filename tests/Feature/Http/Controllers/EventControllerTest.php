@@ -11,15 +11,6 @@ class EventControllerTest extends AbstractTestCase
     /** @var \App\Event */
     private $event;
 
-    /** @inheritDoc */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        // Create an active event for the current authenticated user. 
-        // (Required by the \App\Http\ViewComposers\CurrentEventComposer::class)
-        $this->event = factory(Event::class)->create(['created_by' => $this->user->id, 'updated_by' => $this->user->id, 'is_active' => true]);
-    }
-
     /**
      * Test index method.
      *
@@ -86,10 +77,10 @@ class EventControllerTest extends AbstractTestCase
      */
     public function testEdit()
     {
-        $this->get(route('events.edit', ['event' => $this->event->id]))
+        $this->get(route('events.edit', ['event' => $this->activeEvent->id]))
             ->assertSuccessful()
             ->assertSeeText('Edit an event.')
-            ->assertSee($this->event->title);
+            ->assertSee($this->activeEvent->title);
     }
 
     /**
@@ -118,10 +109,10 @@ class EventControllerTest extends AbstractTestCase
      */
     public function testShow()
     {
-        $this->get(route('events.show', ['event' => $this->event->id]))
+        $this->get(route('events.show', ['event' => $this->activeEvent->id]))
             ->assertSuccessful()
             ->assertSeeText('View an event.')
-            ->assertSee($this->event->title);
+            ->assertSee($this->activeEvent->title);
     }
 
     /**

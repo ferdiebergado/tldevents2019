@@ -2,42 +2,40 @@
 
 namespace Tests\Unit;
 
-use App\User;
-use App\Event;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use App\Repositories\EventEloquentRepository;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use App\Participant;
+use Tests\AbstractTestCase;
 
-class CurrentEventComposerTest extends TestCase
+class CurrentEventComposerTest extends AbstractTestCase
 {
-    protected $route;
+    /** @var string */
     protected $view;
-    protected $user;
+
+    /** @var string */
+    protected $route;
 
     protected function setUp(): void
     {
         // SETUP:       parent
         parent::setUp();
 
-        $this->user = User::find(1);
-        $this->be($this->user);
-
         // SETUP:       View file to test
         $this->view = 'participant.index';
 
         // SETUP:       Temporary route which returns view page
-        $this->route = 'phpunit/CurrentEventComposerTest ';
+        $this->route = 'phpunit/CurrentEventComposerTest';
         app('router')->get($this->route, [function () {
-            return view($this->view);
+            return view($this->view, ['model' => factory(Participant::class)->create()]);
         }]);
     }
 
     public function testViewHasCurrentEvent()
     {
-        $repo = new EventEloquentRepository(new Event());
-        $current = $repo->activeByAuthUser();
-        $this->get($this->route)
-            ->assertViewHas('current_event', $current);
+        $repo = Mockery::mock('App\Repositories\EventRepositoryInterface');
+        $repo->shouldReceive('activeByAuthUser')->once()->andReturn($this->activeEvent->toArray());
+
+        $currentEvent = $repo->activeByAuthUser();
+
+        $this->get($this->route)->assertViewHas('currentEvent', $currentEvent);
     }
 }

@@ -12,8 +12,6 @@ class EventsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Event::class, 10)->create();
-        $event = Event::latest()->first();
-        $event->update(['created_by' => 1, 'updated_by' => 1, 'is_active' => true]);
+        factory(Event::class)->create(['created_by' => 1, 'updated_by' => 1, 'is_active' => true]);
     }
 }

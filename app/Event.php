@@ -15,6 +15,19 @@ class Event extends BaseModel
     use UserStampTrait;
     use SearchableTrait;
 
+    private const TYPES = [
+        'W' => 'Workshop/Writeshop',
+        'T' => 'Training/Orientation',
+        'C' => 'Conference/Summit'
+    ];
+
+    private const GROUPINGS = [
+        'R' => 'By Region',
+        'L' => 'By Learning Area',
+        'M' => 'By Language',
+        'N' => 'No Grouping'
+    ];
+
     protected $fillable = [
         'title',
         'started_at',
@@ -27,7 +40,10 @@ class Event extends BaseModel
     protected $casts = [
         'started_at' => 'date:Y-m-d',
         'ended_at' => 'date:Y-m-d',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'deleted_by' => 'integer'
     ];
 
     protected $appends = [
@@ -50,37 +66,20 @@ class Event extends BaseModel
         return Carbon::parse($value)->toDateString();
     }
 
-    public function getTypeNameAttribute()
-    {
-        switch ($this->attributes['type']) {
-            case 'W':
-                return 'Workshop/Writeshop';
-                break;
-            case 'T':
-                return 'Training/Orientation';
-                break;
-            case 'C':
-                return 'Conference/Summit';
-                break;
-        }
-    }
-
+    /**
+     * get event grouping name
+     */
     public function getGroupingNameAttribute()
     {
-        switch ($this->attributes['grouping']) {
-            case 'R':
-                return 'By Region';
-                break;
-            case 'L':
-                return 'By Learning Area';
-                break;
-            case 'M':
-                return 'By Language';
-                break;
-            case 'N':
-                return 'No Grouping';
-                break;
-        }
+        return self::GROUPINGS[$this->attributes['grouping']];
+    }
+
+    /**
+     * get event type name
+     */
+    public function getTypeNameAttribute()
+    {
+        return self::TYPES[$this->attributes['type']];
     }
 
     public function getDurationDateAttribute()

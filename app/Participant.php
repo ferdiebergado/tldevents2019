@@ -25,7 +25,10 @@ class Participant extends BaseModel
 
     protected $casts = [
         'mobile' => 'array',
-        'email' => 'array'
+        'email' => 'array',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'deleted_by' => 'integer'
     ];
 
     protected $searchable = [

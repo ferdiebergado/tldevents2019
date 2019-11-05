@@ -51,7 +51,8 @@ class ParticipantControllerTest extends AbstractTestCase
 
         $this->json('GET', route('participants.index'), ['search' => implode(', ', $data)])
             ->assertStatus(200)
-            ->assertJsonPath('data.0.first_name', ucfirst($data['last_name']))
+            ->assertJsonCount(1)
+            ->assertJsonPath('data.0.last_name', $data['last_name'])
             ->assertJsonPath('data.0.email', $data['email']);
     }
 

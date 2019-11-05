@@ -59,12 +59,12 @@ class ParticipantServiceTest extends AbstractTestCase
         $participant = factory(Participant::class)->create();
         $updates = [
             'email' => 'abc@123.com',
-            'role_id' => 1
+            'participant_role_id' => 1
         ];
 
         $updated = $this->service->addToEvent($participant->id, $updates);
 
-        $this->assertDatabaseHas('transactions', ['participant_id' => $participant->id, 'event_id' => $this->activeEvent->id, 'participant_role_id' => $updates['role_id']]);
+        $this->assertDatabaseHas('transactions', ['participant_id' => $participant->id, 'event_id' => $this->activeEvent->id, 'participant_role_id' => $updates['participant_role_id']]);
 
         $this->assertContains($updates['email'], $updated->toArray());
     }
