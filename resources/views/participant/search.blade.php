@@ -6,7 +6,8 @@
     <div class="card-body">
         <h4 class="card-title mb-3">Search Participants
         </h4>
-        <participant-search url="{{ route('participants.index') }}" createurl="{{ route('participants.create') }}">
+        <participant-search url="{{ route('participants.index') }}"
+            createurl="{{ route('participants.create_and_add_to_event') }}">
         </participant-search>
     </div>
 </div>

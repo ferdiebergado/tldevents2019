@@ -3,13 +3,12 @@
 namespace Tests\Unit\Policies;
 
 use App\Participant;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\BrowserKitTest as TestCase;
 
 class ParticipantPolicyTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
 
     /** @test */
     public function user_can_create_participant()

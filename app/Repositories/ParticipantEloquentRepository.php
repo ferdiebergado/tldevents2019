@@ -22,4 +22,9 @@ class ParticipantEloquentRepository extends EloquentBaseRepository implements Pa
     {
         return $this->model->search($search)->get();
     }
+
+    public function withUserStampBy(string $field, $value)
+    {
+        return $this->model->with(['creator', 'editor', 'destroyer'])->where($field, $value)->first();
+    }
 }

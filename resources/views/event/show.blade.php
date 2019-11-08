@@ -54,10 +54,17 @@
                     value="{{ $model['is_active'] ? 'Yes':'No' }}">
             </div>
         </div>
-        <a role="button" class="btn btn-primary" href="{{ route('events.edit', ['event' => $model['id']]) }}"><i
-                class="icon-pencil"></i> Edit</a>
-        <a role="button" class="btn btn-light" href="{{ route('events.index') }}"><i class="icon-list"></i> Back to
-            List</a>
+        <div class="row">
+            <div class="col-5">
+
+                <a role="button" class="btn btn-primary" href="{{ route('events.edit', ['event' => $model['id']]) }}"><i
+                        class="icon-pencil"></i> Edit</a>
+                <a role="button" class="btn btn-light" href="{{ route('events.index') }}"><i class="icon-list"></i> Back
+                    to
+                    List</a>
+            </div>
+            @include('history')
+        </div>
     </div>
 </div>
 @endsection

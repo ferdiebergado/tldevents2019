@@ -69,6 +69,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
+        $event = Event::with(['creator', 'editor', 'destroyer'])->find($event->id);
         return view('event.show', ['model' => $event->toArray(), 'task' => 'show']);
     }
 

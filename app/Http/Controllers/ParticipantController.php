@@ -146,4 +146,17 @@ class ParticipantController extends Controller
 
         return redirect()->route('participants.show', $participant);
     }
+
+    /**
+     * Show the form for creating a new participant with add to event fields.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function createAndAddToEvent()
+    {
+        $model = new Participant();
+        $task = 'addtoevent';
+
+        return view('participant.form', compact('model', 'task'));
+    }
 }

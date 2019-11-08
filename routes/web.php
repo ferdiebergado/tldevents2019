@@ -22,6 +22,7 @@ Route::group(['middleware' => ['verified', 'auth', 'active']], function () {
     Route::resource('programs', 'ProgramController');
     Route::resource('events', 'EventController');
     Route::get('/participants/search', 'ParticipantController@search')->name('participants.search');
+    Route::get('/participants/addtoevent', 'ParticipantController@createAndAddToEvent')->name('participants.create_and_add_to_event');
     Route::get('/participants/{participant}/addtoevent', 'ParticipantController@showAddToEventForm')->name('participants.show_add_to_event_form');
     Route::post('/participants/{participant}/addtoevent', 'ParticipantController@addToEvent')->name('participants.add_to_event');
     Route::resource('participants', 'ParticipantController');

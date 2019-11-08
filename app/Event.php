@@ -89,14 +89,16 @@ class Event extends BaseModel
         $duration = '';
 
         if ($started->month === $ended->month) {
-            $duration = $started->monthName . ' ' . $started->day . '-';
+            if ($started->day !== $ended->day) {
+                $duration = $started->day . '-';
+            }
         }
 
         if ($started->month < $ended->month) {
-            $duration = $started->monthName . ' ' . $started->day . ' to ' . $ended->monthName;
+            $duration = $started->day . ' to ' . $ended->monthName . ' ';
         }
 
-        return $duration . $ended->day . ', ' . $ended->year;
+        return $started->monthName . ' ' . $duration . $ended->day . ', ' . $ended->year;
     }
 
     public function assignments()
