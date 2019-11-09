@@ -25,6 +25,16 @@ class EventService
     }
 
     /**
+     * Fetch all events
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fetchAll()
+    {
+        return $this->repository->latest();
+    }
+
+    /**
      * Save an event.
      *
      * @param EventRequest $request

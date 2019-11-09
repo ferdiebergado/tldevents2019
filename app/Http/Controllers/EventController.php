@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Event;
 use Illuminate\Http\Request;
 use App\Http\Requests\EventRequest;
-use App\Repositories\EventRepositoryInterface;
 use App\Services\EventService;
 
 class EventController extends Controller
 {
+    /**
+     * EventController Constructor
+     */
     public function __construct()
     {
         $this->authorizeResource(Event::class, 'event');
@@ -20,9 +22,9 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, EventRepositoryInterface $eventRepository)
+    public function index(Request $request, EventService $service)
     {
-        $model = $eventRepository->latest();
+        $model = $service->fetchAll();
 
         if ($request->isXmlHttpRequest()) {
             return response()->json(

@@ -35,4 +35,12 @@ abstract class AbstractTestCase extends TestCase
         // (Required by the \App\Http\ViewComposers\CurrentEventComposer::class)        
         $this->activeEvent = factory(Event::class)->state('active')->create();
     }
+
+    protected function assertArrayContains(array $needle, array $haystack)
+    {
+        foreach (array_keys($needle) as $key) {
+            $this->assertArrayHasKey($key, $haystack);
+            $this->assertEquals($needle[$key], $haystack[$key]);
+        }
+    }
 }
