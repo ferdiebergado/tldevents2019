@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Http\ViewComposers;
 
-use Mockery;
 use App\Participant;
 use Tests\AbstractTestCase;
 
@@ -31,8 +30,9 @@ class CurrentEventComposerTest extends AbstractTestCase
 
     public function testViewHasCurrentEvent()
     {
-        $repo = Mockery::mock('App\Repositories\EventRepositoryInterface');
-        $repo->shouldReceive('activeByAuthUser')->once()->andReturn($this->activeEvent->toArray());
+        $repo = $this->mock(App\Repositories\EventRepositoryInterface::class, function ($mock) {
+            $mock->shouldReceive('activeByAuthUser')->once()->andReturn($this->activeEvent->toArray());
+        });
 
         $currentEvent = $repo->activeByAuthUser();
 

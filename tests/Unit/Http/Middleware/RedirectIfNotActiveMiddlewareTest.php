@@ -19,9 +19,9 @@ class RedirectIfNotActiveMiddlewareTest extends TestCase
      */
     public function testInactiveUserIsRedirected()
     {
-        $user = factory(User::class)->create(['is_active' => false]);
+        $user = factory(User::class)->state('inactive')->create();
 
-        $this->actingAs($user);
+        $this->be($user);
 
         $request = Request::create('/home');
 
@@ -41,9 +41,9 @@ class RedirectIfNotActiveMiddlewareTest extends TestCase
      */
     public function testActiveUserIsNotRedirected()
     {
-        $user = factory(User::class)->create(['is_active' => true]);
+        $user = factory(User::class)->state('active')->create();
 
-        $this->actingAs($user);
+        $this->be($user);
 
         $request = Request::create('/home');
 

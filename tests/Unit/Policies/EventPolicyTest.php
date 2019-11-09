@@ -4,7 +4,6 @@ namespace Tests\Unit\Policies;
 
 use App\Event;
 use Tests\TestCase;
-use App\Participant;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
