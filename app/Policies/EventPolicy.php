@@ -72,7 +72,7 @@ class EventPolicy
      */
     public function delete(User $user, Event $event)
     {
-        return $user->role === 2;
+        return $user->role === 1;
     }
 
     /**
@@ -84,7 +84,7 @@ class EventPolicy
      */
     public function restore(User $user, Event $event)
     {
-        return $user->role === 2;
+        return $user->role === 1;
     }
 
     /**

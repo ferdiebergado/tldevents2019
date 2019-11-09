@@ -28,7 +28,6 @@ class EventRequestTest extends TestCase
         $this->rules = (new EventRequest())->rules();
     }
 
-
     /**
      * Data Provider
      *
